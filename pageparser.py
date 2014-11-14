@@ -1,21 +1,24 @@
 __author__ = 'djupp'
 
+from helper import *
+import urllib
+from bs4 import BeautifulSoup
+
 
 class Page:
 
-    def __init__(self, page_no, book):
+    def __init__(self, page_no, section, fragment=False):
         self.page = page_no
-        self.book = book
+        self.section = section
+        self.book = self.section.book
         self.url = to_url(self.page, self.book.book_number)
         self.soup = self.get_page()
+        parse(self.soup, fragment)
 
     def get_page(self):
         page_data = urllib.request.urlopen(self.url)
         soup = BeautifulSoup(page_data)
         return soup
-
-    def parse(self):
-        pass
 
     def get_next_page(self):
         # Implement routine to find which page comes next
@@ -27,4 +30,13 @@ class Page:
             return page_nos[0]
         else:
             return None
+
+
+def parse(soup, fragment):
+    if fragment:
+        # Parse pages that are split between sections
+        pass
+    else:
+        # Parse pages that belong only to one section
+        pass
 

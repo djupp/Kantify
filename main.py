@@ -11,7 +11,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import pdb
 from helper import *
-from sectionhelper import Section, SectionCrawler
+from sectionparser import Section, SectionCrawler
 
 BASE_URL = """http://korpora.zim.uni-duisburg-essen.de/kant/aa"""
 

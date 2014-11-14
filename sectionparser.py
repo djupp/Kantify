@@ -1,7 +1,7 @@
 __author__ = 'djupp'
 
 from helper import *
-from main import Page
+from pageparser import Page
 
 INDENT = {9: "Part", 8: "Chapter", 7: "Section",
           6: "Subsection", 5: "Subsubsection",
@@ -86,8 +86,18 @@ class SectionCrawler:
             end_page = -1
         else:
             end_page = next_section.start
-        while not cur_page == end_page or not cur_page:
-            print("Inserting page " + str(cur_page))
-            page = Page(cur_page, section.book)
+        # Deal with first page (e.g., cut out anything that might not belong to section)
+        if cur_page == section.start and not cur_page == end_page:
+            page = Page(cur_page, section, True)
             section.pages.append(page)
             cur_page = page.get_next_page()
+        # Run through the section
+        while not cur_page == end_page or not cur_page:
+            print("Inserting page " + str(cur_page))
+            page = Page(cur_page, section)
+            section.pages.append(page)
+            cur_page = page.get_next_page()
+        # Add the last page
+        if cur_page and cur_page == end_page:
+            page=Page(cur_page, section, True)
+            section.pages.append(page)
